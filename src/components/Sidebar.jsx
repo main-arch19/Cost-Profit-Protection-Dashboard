@@ -1,0 +1,237 @@
+import { useState } from 'react'
+import { navItems } from '../data/mockData.js'
+import { FONTS, COLORS, SIDEBAR_NAV_ITEM_BASE, SIDEBAR_NAV_ITEM_ACTIVE } from '../styles/tokens.js'
+
+// ─── Shield SVG with downward cost-trend line ─────────────────────────────────
+function ShieldLogo() {
+  return (
+    <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Shield fill */}
+      <path
+        d="M18 2L4 8v11c0 10.5 6.1 19.3 14 22 7.9-2.7 14-11.5 14-22V8L18 2z"
+        fill="#10B981"
+        fillOpacity="0.12"
+      />
+      {/* Shield outline */}
+      <path
+        d="M18 2L4 8v11c0 10.5 6.1 19.3 14 22 7.9-2.7 14-11.5 14-22V8L18 2z"
+        stroke="#10B981"
+        strokeWidth="2"
+        fill="none"
+      />
+      {/* Downward cost-trend line inside shield */}
+      <polyline
+        points="9,14 13,18 17,15 22,21 27,17"
+        stroke="#10B981"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+      {/* Arrow tip pointing down-right */}
+      <polyline
+        points="24,17 27,17 27,20"
+        stroke="#10B981"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </svg>
+  )
+}
+
+// ─── Nav Icon (path-based SVG) ────────────────────────────────────────────────
+function NavIcon({ path, active }) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={active ? COLORS.activeNavText : '#6B7280'}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      style={{ flexShrink: 0 }}
+    >
+      <path d={path} />
+    </svg>
+  )
+}
+
+// ─── Count Badge ──────────────────────────────────────────────────────────────
+function CountBadge({ count, color }) {
+  return (
+    <span style={{
+      marginLeft:      'auto',
+      minWidth:        '20px',
+      height:          '20px',
+      borderRadius:    '10px',
+      backgroundColor: color,
+      color:           '#FFFFFF',
+      fontSize:        '11px',
+      fontWeight:      '700',
+      fontFamily:      FONTS.mono,
+      display:         'flex',
+      alignItems:      'center',
+      justifyContent:  'center',
+      padding:         '0 5px',
+      lineHeight:      '1',
+      flexShrink:      0,
+    }}>
+      {count}
+    </span>
+  )
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+export default function Sidebar({ activeNav, onNavChange }) {
+  const [hoveredItem, setHoveredItem] = useState(null)
+
+  return (
+    <div style={{
+      position:        'fixed',
+      top:             0,
+      left:            0,
+      width:           '240px',
+      height:          '100vh',
+      backgroundColor: '#FAFAFA',
+      borderRight:     '1px solid #F0FDF4',
+      display:         'flex',
+      flexDirection:   'column',
+      overflowY:       'auto',
+      zIndex:          100,
+    }}>
+      {/* Logo / Brand */}
+      <div style={{
+        padding:      '20px 16px 16px',
+        borderBottom: '1px solid #F0FDF4',
+        flexShrink:   0,
+      }}>
+        <div style={{
+          display:     'flex',
+          alignItems:  'center',
+          gap:         '10px',
+          marginBottom:'12px',
+        }}>
+          <ShieldLogo />
+          <div>
+            <div style={{
+              fontFamily:    FONTS.ui,
+              fontSize:      '13px',
+              fontWeight:    '700',
+              color:         '#065F46',
+              letterSpacing: '0.02em',
+              lineHeight:    '1.2',
+            }}>
+              COST & PROFIT
+            </div>
+            <div style={{
+              fontFamily:    FONTS.mono,
+              fontSize:      '9px',
+              fontWeight:    '400',
+              color:         '#6B7280',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}>
+              PROTECTION
+            </div>
+          </div>
+        </div>
+
+        {/* Status indicator */}
+        <div style={{
+          display:         'flex',
+          alignItems:      'center',
+          gap:             '6px',
+          padding:         '6px 10px',
+          backgroundColor: 'rgba(239,68,68,0.06)',
+          borderRadius:    '6px',
+          border:          '1px solid rgba(239,68,68,0.15)',
+        }}>
+          <span style={{
+            width:           '7px',
+            height:          '7px',
+            borderRadius:    '50%',
+            backgroundColor: '#EF4444',
+            flexShrink:      0,
+            boxShadow:       '0 0 0 2px rgba(239,68,68,0.2)',
+          }} />
+          <span style={{
+            fontFamily: FONTS.ui,
+            fontSize:   '11px',
+            fontWeight: '600',
+            color:      '#991B1B',
+          }}>
+            5 Active Drains
+          </span>
+        </div>
+      </div>
+
+      {/* Navigation */}
+      <nav style={{ padding: '16px 10px', flex: 1 }}>
+        {/* Section label */}
+        <div style={{
+          fontFamily:    FONTS.ui,
+          fontSize:      '10px',
+          fontWeight:    '600',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          color:         '#6B7280',
+          padding:       '0 6px',
+          marginBottom:  '8px',
+        }}>
+          Audit Areas
+        </div>
+
+        {navItems.map(item => {
+          const isActive  = activeNav === item.id
+          const isHovered = hoveredItem === item.id && !isActive
+          const itemStyle = isActive
+            ? SIDEBAR_NAV_ITEM_ACTIVE
+            : {
+                ...SIDEBAR_NAV_ITEM_BASE,
+                backgroundColor: isHovered ? 'rgba(16,185,129,0.04)' : 'transparent',
+              }
+
+          return (
+            <div
+              key={item.id}
+              style={itemStyle}
+              onClick={() => onNavChange(item.id)}
+              onMouseEnter={() => setHoveredItem(item.id)}
+              onMouseLeave={() => setHoveredItem(null)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={e => e.key === 'Enter' && onNavChange(item.id)}
+            >
+              <NavIcon path={item.iconPath} active={isActive} />
+              <span style={{ flex: 1 }}>{item.label}</span>
+              <CountBadge count={item.badgeCount} color={item.badgeColor} />
+            </div>
+          )
+        })}
+      </nav>
+
+      {/* Footer */}
+      <div style={{
+        padding:      '12px 16px',
+        borderTop:    '1px solid #F0FDF4',
+        flexShrink:   0,
+      }}>
+        <div style={{
+          fontFamily: FONTS.ui,
+          fontSize:   '11px',
+          color:      '#9CA3AF',
+          lineHeight: '1.5',
+        }}>
+          <div style={{ fontWeight: '600', color: '#6B7280', marginBottom: '2px' }}>
+            February 2026
+          </div>
+          Audit Period Active
+        </div>
+      </div>
+    </div>
+  )
+}

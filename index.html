@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cost &amp; Profit Protection Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body, #root { height: 100%; }
+      body {
+        margin: 0;
+        padding: 0;
+        background: #FFFFFF;
+        font-family: 'IBM Plex Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      @keyframes drainPulse {
+        0%   { box-shadow: 0 0 0px   0px  rgba(239,68,68,0.00), 0 1px 3px rgba(0,0,0,0.06); }
+        50%  { box-shadow: 0 0 16px  4px  rgba(239,68,68,0.25), 0 1px 3px rgba(0,0,0,0.06); }
+        100% { box-shadow: 0 0 0px   0px  rgba(239,68,68,0.00), 0 1px 3px rgba(0,0,0,0.06); }
+      }
+      .pulse-card {
+        animation: drainPulse 2s ease-in-out infinite;
+      }
+
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #F9FAFB; }
+      ::-webkit-scrollbar-thumb { background: #D1FAE5; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #10B981; }
+
+      button { font-family: 'IBM Plex Sans', sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
