@@ -184,7 +184,7 @@ function DrainMeter({ meter }) {
 }
 
 // ─── Cost Drain Meters Section ────────────────────────────────────────────────
-export default function CostDrainMeters() {
+export default function CostDrainMeters({ isMobile }) {
   const totalMonthlyCost = drainMeters.reduce((sum, m) => sum + m.monthlyCost, 0)
 
   return (
@@ -195,6 +195,8 @@ export default function CostDrainMeters() {
         alignItems:     'flex-end',
         justifyContent: 'space-between',
         marginBottom:   '16px',
+        flexWrap:       'wrap',
+        gap:            '8px',
       }}>
         <div>
           <h2 style={{
@@ -218,7 +220,7 @@ export default function CostDrainMeters() {
           </p>
         </div>
 
-        {/* Total drain chip */}
+        {/* Total drain chip — wraps below heading on narrow screens */}
         <div style={{
           fontFamily:      FONTS.mono,
           fontSize:        '13px',
@@ -240,10 +242,10 @@ export default function CostDrainMeters() {
         </div>
       </div>
 
-      {/* Meter cards — 3 + 2 layout */}
+      {/* Meter cards — 3 + 2 on desktop, single column on mobile */}
       <div style={{
         display:             'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
+        gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)',
         gap:                 '16px',
         marginBottom:        '16px',
       }}>
@@ -254,7 +256,7 @@ export default function CostDrainMeters() {
 
       <div style={{
         display:             'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, 1fr)',
         gap:                 '16px',
       }}>
         {drainMeters.slice(3).map(meter => (

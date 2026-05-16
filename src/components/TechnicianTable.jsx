@@ -255,8 +255,10 @@ export default function TechnicianTable() {
 
       {/* Table card */}
       <div style={{ ...CARD_BASE, padding: 0, overflow: 'hidden' }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
         <table style={{
           width:          '100%',
+          minWidth:       '700px',
           borderCollapse: 'collapse',
         }}>
           <thead>
@@ -397,6 +399,7 @@ export default function TechnicianTable() {
             })}
           </tbody>
         </table>
+        </div>
 
         {/* Table footer */}
         <div style={{

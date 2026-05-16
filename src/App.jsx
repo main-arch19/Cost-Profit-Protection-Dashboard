@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { alerts } from './data/mockData.js'
 import { FONTS } from './styles/tokens.js'
+import { useWindowWidth } from './hooks/useWindowWidth.js'
 import Sidebar from './components/Sidebar.jsx'
 import AlertBannerZone from './components/AlertBannerZone.jsx'
 import KPIRow from './components/KPIRow.jsx'
@@ -8,18 +9,20 @@ import CostDrainMeters from './components/CostDrainMeters.jsx'
 import TechnicianTable from './components/TechnicianTable.jsx'
 
 // ─── Page Header ──────────────────────────────────────────────────────────────
-function PageHeader() {
+function PageHeader({ isMobile }) {
   return (
     <div style={{
       display:        'flex',
       alignItems:     'flex-start',
       justifyContent: 'space-between',
       marginBottom:   '28px',
+      flexWrap:       'wrap',
+      gap:            '12px',
     }}>
       <div>
         <h1 style={{
           fontFamily:    FONTS.ui,
-          fontSize:      '22px',
+          fontSize:      isMobile ? '18px' : '22px',
           fontWeight:    '700',
           color:         '#111827',
           margin:        '0 0 4px 0',
@@ -51,7 +54,6 @@ function PageHeader() {
         gap:             '6px',
         flexShrink:      0,
       }}>
-        {/* Live dot */}
         <span style={{
           width:           '7px',
           height:          '7px',
@@ -103,8 +105,12 @@ function SectionDivider({ label }) {
 
 // ─── App Root ─────────────────────────────────────────────────────────────────
 export default function App() {
-  const [activeNav, setActiveNav]           = useState('cost-drains')
+  const [activeNav, setActiveNav]             = useState('cost-drains')
   const [dismissedAlerts, setDismissedAlerts] = useState([])
+  const [sidebarOpen, setSidebarOpen]         = useState(() => window.innerWidth > 768)
+  const [hoverReopen, setHoverReopen]         = useState(false)
+
+  const { isMobile } = useWindowWidth()
 
   const visibleAlerts = alerts.filter(a => !dismissedAlerts.includes(a.id))
 
@@ -120,37 +126,143 @@ export default function App() {
       fontFamily:      FONTS.ui,
     }}>
       {/* ── Fixed sidebar ──────────────────────────────────────────────── */}
-      <Sidebar activeNav={activeNav} onNavChange={setActiveNav} />
+      <Sidebar
+        activeNav={activeNav}
+        onNavChange={setActiveNav}
+        isOpen={sidebarOpen}
+        isMobile={isMobile}
+        onToggle={() => setSidebarOpen(p => !p)}
+        onClose={() => setSidebarOpen(false)}
+      />
 
-      {/* ── Main column (offset by sidebar width) ─────────────────────── */}
+      {/* ── Mobile backdrop ────────────────────────────────────────────── */}
+      {isMobile && sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+          style={{
+            position:        'fixed',
+            inset:           0,
+            backgroundColor: 'rgba(0,0,0,0.35)',
+            zIndex:          99,
+            cursor:          'pointer',
+          }}
+        />
+      )}
+
+      {/* ── Desktop floating re-open button ────────────────────────────── */}
+      {!isMobile && !sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open sidebar"
+          onMouseEnter={() => setHoverReopen(true)}
+          onMouseLeave={() => setHoverReopen(false)}
+          style={{
+            position:        'fixed',
+            top:             '16px',
+            left:            '12px',
+            zIndex:          200,
+            width:           '30px',
+            height:          '30px',
+            borderRadius:    '6px',
+            backgroundColor: hoverReopen ? '#F0FDF4' : '#FAFAFA',
+            border:          `1px solid ${hoverReopen ? '#10B981' : '#E5E7EB'}`,
+            cursor:          'pointer',
+            display:         'flex',
+            alignItems:      'center',
+            justifyContent:  'center',
+            boxShadow:       hoverReopen ? '0 0 0 3px rgba(16,185,129,0.12)' : '0 1px 4px rgba(0,0,0,0.10)',
+            transition:      'all 0.15s ease',
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            {/* Outlined left panel = collapsed sidebar */}
+            <rect x="1" y="1" width="5" height="14" rx="1.5"
+              fill="none"
+              stroke={hoverReopen ? '#10B981' : '#D1D5DB'}
+              strokeWidth="1.2" />
+            {/* Filled right panel = main content */}
+            <rect x="7.5" y="1" width="7.5" height="14" rx="1.5"
+              fill={hoverReopen ? '#10B981' : '#9CA3AF'} />
+            {/* Right-pointing chevron inside left panel */}
+            <polyline
+              points="5,5.5 7,8 5,10.5"
+              stroke={hoverReopen ? '#10B981' : '#9CA3AF'}
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
+      )}
+
+      {/* ── Main column ────────────────────────────────────────────────── */}
       <div style={{
-        marginLeft:    '240px',
+        marginLeft:    isMobile ? '0' : sidebarOpen ? '240px' : '0',
+        transition:    'margin-left 0.25s ease',
         flex:          1,
         display:       'flex',
         flexDirection: 'column',
         overflow:      'hidden',
         minWidth:      0,
       }}>
-        {/* Alert banner zone — 48px minimum, expands with banners */}
+        {/* Mobile top bar (hamburger) */}
+        {isMobile && !sidebarOpen && (
+          <div style={{
+            height:          '48px',
+            display:         'flex',
+            alignItems:      'center',
+            padding:         '0 16px',
+            borderBottom:    '1px solid #F0FDF4',
+            backgroundColor: '#FAFAFA',
+            flexShrink:      0,
+          }}>
+            <button
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open sidebar"
+              style={{
+                background:   'none',
+                border:       '1px solid #E5E7EB',
+                borderRadius: '6px',
+                cursor:       'pointer',
+                padding:      '6px 8px',
+                display:      'flex',
+                alignItems:   'center',
+                color:        '#6B7280',
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5"
+                strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6"  x2="21" y2="6"  />
+                <line x1="3" y1="18" x2="21" y2="18" />
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {/* Alert banner zone */}
         <div style={{ flexShrink: 0 }}>
-          <AlertBannerZone alerts={visibleAlerts} onDismiss={handleDismiss} />
+          <AlertBannerZone alerts={visibleAlerts} onDismiss={handleDismiss} isMobile={isMobile} />
         </div>
 
         {/* Scrollable main content */}
         <div style={{
           flex:      1,
           overflowY: 'auto',
-          padding:   '28px 28px 48px',
+          padding:   isMobile ? '16px 16px 48px' : '28px 28px 48px',
         }}>
-          <PageHeader />
+          <PageHeader isMobile={isMobile} />
 
           {/* KPI Row */}
-          <KPIRow />
+          <KPIRow isMobile={isMobile} />
 
           {/* Cost Drain Meters */}
           <SectionDivider label="Cost Drain Meters — % of Revenue" />
           <div style={{ marginTop: '20px' }}>
-            <CostDrainMeters />
+            <CostDrainMeters isMobile={isMobile} />
           </div>
 
           {/* Technician Table */}

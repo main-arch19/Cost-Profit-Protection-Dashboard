@@ -119,7 +119,7 @@ function KPICard({ data, isPulsing }) {
 }
 
 // ─── KPI Row ──────────────────────────────────────────────────────────────────
-export default function KPIRow() {
+export default function KPIRow({ isMobile }) {
   // Pulse is a derived boolean — not state
   const isPulsing = kpiData.activeDrain.value > kpiData.activeDrain.threshold
 
@@ -140,10 +140,10 @@ export default function KPIRow() {
         </h2>
       </div>
 
-      {/* 4-column KPI grid */}
+      {/* KPI grid — 4 columns on desktop, 1 on mobile */}
       <div style={{
         display:             'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridTemplateColumns: isMobile ? '1fr' : 'repeat(4, 1fr)',
         gap:                 '16px',
       }}>
         <KPICard data={kpiData.identifiedSavings} isPulsing={false} />

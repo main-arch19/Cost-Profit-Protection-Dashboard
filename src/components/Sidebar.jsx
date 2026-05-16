@@ -6,20 +6,17 @@ import { FONTS, COLORS, SIDEBAR_NAV_ITEM_BASE, SIDEBAR_NAV_ITEM_ACTIVE } from '.
 function ShieldLogo() {
   return (
     <svg width="36" height="40" viewBox="0 0 36 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      {/* Shield fill */}
       <path
         d="M18 2L4 8v11c0 10.5 6.1 19.3 14 22 7.9-2.7 14-11.5 14-22V8L18 2z"
         fill="#10B981"
         fillOpacity="0.12"
       />
-      {/* Shield outline */}
       <path
         d="M18 2L4 8v11c0 10.5 6.1 19.3 14 22 7.9-2.7 14-11.5 14-22V8L18 2z"
         stroke="#10B981"
         strokeWidth="2"
         fill="none"
       />
-      {/* Downward cost-trend line inside shield */}
       <polyline
         points="9,14 13,18 17,15 22,21 27,17"
         stroke="#10B981"
@@ -28,14 +25,12 @@ function ShieldLogo() {
         strokeLinejoin="round"
         fill="none"
       />
-      {/* Arrow tip pointing down-right */}
       <polyline
         points="24,17 27,17 27,20"
         stroke="#10B981"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        fill="none"
       />
     </svg>
   )
@@ -86,8 +81,9 @@ function CountBadge({ count, color }) {
 }
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
-export default function Sidebar({ activeNav, onNavChange }) {
-  const [hoveredItem, setHoveredItem] = useState(null)
+export default function Sidebar({ activeNav, onNavChange, isOpen, isMobile, onToggle, onClose }) {
+  const [hoveredItem, setHoveredItem]   = useState(null)
+  const [hoverToggle, setHoverToggle]   = useState(false)
 
   return (
     <div style={{
@@ -102,6 +98,9 @@ export default function Sidebar({ activeNav, onNavChange }) {
       flexDirection:   'column',
       overflowY:       'auto',
       zIndex:          100,
+      transform:       isOpen ? 'translateX(0)' : 'translateX(-240px)',
+      transition:      'transform 0.25s ease',
+      boxShadow:       isMobile && isOpen ? '4px 0 20px rgba(0,0,0,0.12)' : 'none',
     }}>
       {/* Logo / Brand */}
       <div style={{
@@ -110,34 +109,80 @@ export default function Sidebar({ activeNav, onNavChange }) {
         flexShrink:   0,
       }}>
         <div style={{
-          display:     'flex',
-          alignItems:  'center',
-          gap:         '10px',
-          marginBottom:'12px',
+          display:        'flex',
+          alignItems:     'center',
+          gap:            '10px',
+          marginBottom:   '12px',
+          justifyContent: 'space-between',
         }}>
-          <ShieldLogo />
-          <div>
-            <div style={{
-              fontFamily:    FONTS.ui,
-              fontSize:      '13px',
-              fontWeight:    '700',
-              color:         '#065F46',
-              letterSpacing: '0.02em',
-              lineHeight:    '1.2',
-            }}>
-              COST & PROFIT
-            </div>
-            <div style={{
-              fontFamily:    FONTS.mono,
-              fontSize:      '9px',
-              fontWeight:    '400',
-              color:         '#6B7280',
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-            }}>
-              PROTECTION
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <ShieldLogo />
+            <div>
+              <div style={{
+                fontFamily:    FONTS.ui,
+                fontSize:      '13px',
+                fontWeight:    '700',
+                color:         '#065F46',
+                letterSpacing: '0.02em',
+                lineHeight:    '1.2',
+              }}>
+                COST & PROFIT
+              </div>
+              <div style={{
+                fontFamily:    FONTS.mono,
+                fontSize:      '9px',
+                fontWeight:    '400',
+                color:         '#6B7280',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+              }}>
+                PROTECTION
+              </div>
             </div>
           </div>
+
+          {/* Collapse toggle button */}
+          <button
+            onClick={onToggle}
+            aria-label="Collapse sidebar"
+            onMouseEnter={() => setHoverToggle(true)}
+            onMouseLeave={() => setHoverToggle(false)}
+            style={{
+              background:    hoverToggle ? '#F0FDF4' : '#FAFAFA',
+              border:        `1px solid ${hoverToggle ? '#10B981' : '#E5E7EB'}`,
+              borderRadius:  '6px',
+              cursor:        'pointer',
+              padding:       '0',
+              width:         '30px',
+              height:        '30px',
+              display:       'flex',
+              alignItems:    'center',
+              justifyContent:'center',
+              flexShrink:    0,
+              boxShadow:     hoverToggle ? '0 0 0 3px rgba(16,185,129,0.12)' : 'none',
+              transition:    'all 0.15s ease',
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              {/* Filled left panel = sidebar */}
+              <rect x="1" y="1" width="5" height="14" rx="1.5"
+                fill={hoverToggle ? '#10B981' : '#9CA3AF'} />
+              {/* Outlined right panel = main content */}
+              <rect x="7.5" y="1" width="7.5" height="14" rx="1.5"
+                fill="none"
+                stroke={hoverToggle ? '#10B981' : '#D1D5DB'}
+                strokeWidth="1.2" />
+              {/* Left-pointing chevron inside right panel */}
+              <polyline
+                points="11,5.5 9,8 11,10.5"
+                stroke={hoverToggle ? '#10B981' : '#9CA3AF'}
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
         </div>
 
         {/* Status indicator */}
@@ -171,7 +216,6 @@ export default function Sidebar({ activeNav, onNavChange }) {
 
       {/* Navigation */}
       <nav style={{ padding: '16px 10px', flex: 1 }}>
-        {/* Section label */}
         <div style={{
           fontFamily:    FONTS.ui,
           fontSize:      '10px',
@@ -199,12 +243,12 @@ export default function Sidebar({ activeNav, onNavChange }) {
             <div
               key={item.id}
               style={itemStyle}
-              onClick={() => onNavChange(item.id)}
+              onClick={() => { onNavChange(item.id); if (isMobile) onClose() }}
               onMouseEnter={() => setHoveredItem(item.id)}
               onMouseLeave={() => setHoveredItem(null)}
               role="button"
               tabIndex={0}
-              onKeyDown={e => e.key === 'Enter' && onNavChange(item.id)}
+              onKeyDown={e => { if (e.key === 'Enter') { onNavChange(item.id); if (isMobile) onClose() } }}
             >
               <NavIcon path={item.iconPath} active={isActive} />
               <span style={{ flex: 1 }}>{item.label}</span>
@@ -216,9 +260,9 @@ export default function Sidebar({ activeNav, onNavChange }) {
 
       {/* Footer */}
       <div style={{
-        padding:      '12px 16px',
-        borderTop:    '1px solid #F0FDF4',
-        flexShrink:   0,
+        padding:    '12px 16px',
+        borderTop:  '1px solid #F0FDF4',
+        flexShrink: 0,
       }}>
         <div style={{
           fontFamily: FONTS.ui,

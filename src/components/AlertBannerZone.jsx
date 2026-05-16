@@ -57,19 +57,20 @@ const BANNER_CONFIG = {
 }
 
 // ─── Single Alert Banner ──────────────────────────────────────────────────────
-function AlertBanner({ alert, onDismiss }) {
+function AlertBanner({ alert, onDismiss, isMobile }) {
   const [hoveredBtn, setHoveredBtn] = useState(null)
   const cfg = BANNER_CONFIG[alert.type]
 
   return (
     <div style={{
-      display:        'flex',
-      alignItems:     'center',
-      gap:            '12px',
-      padding:        '10px 20px',
+      display:         'flex',
+      alignItems:      'center',
+      flexWrap:        isMobile ? 'wrap' : 'nowrap',
+      gap:             '12px',
+      padding:         isMobile ? '10px 12px' : '10px 20px',
       backgroundColor: cfg.background,
-      borderLeft:     `4px solid ${cfg.borderColor}`,
-      borderBottom:   '1px solid rgba(0,0,0,0.04)',
+      borderLeft:      `4px solid ${cfg.borderColor}`,
+      borderBottom:    '1px solid rgba(0,0,0,0.04)',
     }}>
       {/* Icon */}
       <div style={{
@@ -153,7 +154,7 @@ function AlertBanner({ alert, onDismiss }) {
 }
 
 // ─── Alert Banner Zone ────────────────────────────────────────────────────────
-export default function AlertBannerZone({ alerts, onDismiss }) {
+export default function AlertBannerZone({ alerts, onDismiss, isMobile }) {
   if (alerts.length === 0) {
     return (
       <div style={{
@@ -186,7 +187,7 @@ export default function AlertBannerZone({ alerts, onDismiss }) {
   return (
     <div style={{ borderBottom: '1px solid #F0FDF4' }}>
       {alerts.map(alert => (
-        <AlertBanner key={alert.id} alert={alert} onDismiss={onDismiss} />
+        <AlertBanner key={alert.id} alert={alert} onDismiss={onDismiss} isMobile={isMobile} />
       ))}
     </div>
   )
