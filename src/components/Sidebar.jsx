@@ -109,80 +109,34 @@ export default function Sidebar({ activeNav, onNavChange, isOpen, isMobile, onTo
         flexShrink:   0,
       }}>
         <div style={{
-          display:        'flex',
-          alignItems:     'center',
-          gap:            '10px',
-          marginBottom:   '12px',
-          justifyContent: 'space-between',
+          display:     'flex',
+          alignItems:  'center',
+          gap:         '10px',
+          marginBottom:'12px',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <ShieldLogo />
-            <div>
-              <div style={{
-                fontFamily:    FONTS.ui,
-                fontSize:      '13px',
-                fontWeight:    '700',
-                color:         '#065F46',
-                letterSpacing: '0.02em',
-                lineHeight:    '1.2',
-              }}>
-                COST & PROFIT
-              </div>
-              <div style={{
-                fontFamily:    FONTS.mono,
-                fontSize:      '9px',
-                fontWeight:    '400',
-                color:         '#6B7280',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}>
-                PROTECTION
-              </div>
+          <ShieldLogo />
+          <div>
+            <div style={{
+              fontFamily:    FONTS.ui,
+              fontSize:      '13px',
+              fontWeight:    '700',
+              color:         '#065F46',
+              letterSpacing: '0.02em',
+              lineHeight:    '1.2',
+            }}>
+              COST & PROFIT
+            </div>
+            <div style={{
+              fontFamily:    FONTS.mono,
+              fontSize:      '9px',
+              fontWeight:    '400',
+              color:         '#6B7280',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+            }}>
+              PROTECTION
             </div>
           </div>
-
-          {/* Collapse toggle button */}
-          <button
-            onClick={onToggle}
-            aria-label="Collapse sidebar"
-            onMouseEnter={() => setHoverToggle(true)}
-            onMouseLeave={() => setHoverToggle(false)}
-            style={{
-              background:    hoverToggle ? '#059669' : '#10B981',
-              border:        'none',
-              borderRadius:  '6px',
-              cursor:        'pointer',
-              padding:       '0',
-              width:         '30px',
-              height:        '30px',
-              display:       'flex',
-              alignItems:    'center',
-              justifyContent:'center',
-              flexShrink:    0,
-              boxShadow:     hoverToggle ? '0 0 0 3px rgba(16,185,129,0.25)' : '0 0 0 2px rgba(16,185,129,0.15)',
-              transition:    'all 0.15s ease',
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              {/* Filled left panel = sidebar */}
-              <rect x="1" y="1" width="5" height="14" rx="1.5"
-                fill="rgba(255,255,255,0.9)" />
-              {/* Outlined right panel = main content */}
-              <rect x="7.5" y="1" width="7.5" height="14" rx="1.5"
-                fill="none"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="1.2" />
-              {/* Left-pointing chevron inside right panel */}
-              <polyline
-                points="11,5.5 9,8 11,10.5"
-                stroke="rgba(255,255,255,0.9)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
         </div>
 
         {/* Status indicator */}
@@ -260,9 +214,12 @@ export default function Sidebar({ activeNav, onNavChange, isOpen, isMobile, onTo
 
       {/* Footer */}
       <div style={{
-        padding:    '12px 16px',
-        borderTop:  '1px solid #F0FDF4',
-        flexShrink: 0,
+        padding:        '12px 16px',
+        borderTop:      '1px solid #F0FDF4',
+        flexShrink:     0,
+        display:        'flex',
+        alignItems:     'center',
+        justifyContent: 'space-between',
       }}>
         <div style={{
           fontFamily: FONTS.ui,
@@ -275,6 +232,46 @@ export default function Sidebar({ activeNav, onNavChange, isOpen, isMobile, onTo
           </div>
           Audit Period Active
         </div>
+
+        {/* Collapse toggle button */}
+        <button
+          onClick={onToggle}
+          aria-label="Collapse sidebar"
+          onMouseEnter={() => setHoverToggle(true)}
+          onMouseLeave={() => setHoverToggle(false)}
+          style={{
+            background:    hoverToggle ? '#059669' : '#10B981',
+            border:        'none',
+            borderRadius:  '6px',
+            cursor:        'pointer',
+            padding:       '0',
+            width:         '30px',
+            height:        '30px',
+            display:       'flex',
+            alignItems:    'center',
+            justifyContent:'center',
+            flexShrink:    0,
+            boxShadow:     hoverToggle ? '0 0 0 3px rgba(16,185,129,0.25)' : '0 0 0 2px rgba(16,185,129,0.15)',
+            transition:    'all 0.15s ease',
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="5" height="14" rx="1.5"
+              fill="rgba(255,255,255,0.9)" />
+            <rect x="7.5" y="1" width="7.5" height="14" rx="1.5"
+              fill="none"
+              stroke="rgba(255,255,255,0.5)"
+              strokeWidth="1.2" />
+            <polyline
+              points="11,5.5 9,8 11,10.5"
+              stroke="rgba(255,255,255,0.9)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   )

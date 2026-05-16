@@ -159,7 +159,7 @@ export default function App() {
           onMouseLeave={() => setHoverReopen(false)}
           style={{
             position:        'fixed',
-            top:             '16px',
+            bottom:          '20px',
             left:            '12px',
             zIndex:          200,
             width:           '30px',
