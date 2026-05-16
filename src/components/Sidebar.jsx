@@ -148,8 +148,8 @@ export default function Sidebar({ activeNav, onNavChange, isOpen, isMobile, onTo
             onMouseEnter={() => setHoverToggle(true)}
             onMouseLeave={() => setHoverToggle(false)}
             style={{
-              background:    hoverToggle ? '#F0FDF4' : '#FAFAFA',
-              border:        `1px solid ${hoverToggle ? '#10B981' : '#E5E7EB'}`,
+              background:    hoverToggle ? '#059669' : '#10B981',
+              border:        'none',
               borderRadius:  '6px',
               cursor:        'pointer',
               padding:       '0',
@@ -159,7 +159,7 @@ export default function Sidebar({ activeNav, onNavChange, isOpen, isMobile, onTo
               alignItems:    'center',
               justifyContent:'center',
               flexShrink:    0,
-              boxShadow:     hoverToggle ? '0 0 0 3px rgba(16,185,129,0.12)' : 'none',
+              boxShadow:     hoverToggle ? '0 0 0 3px rgba(16,185,129,0.25)' : '0 0 0 2px rgba(16,185,129,0.15)',
               transition:    'all 0.15s ease',
             }}
           >
@@ -167,16 +167,16 @@ export default function Sidebar({ activeNav, onNavChange, isOpen, isMobile, onTo
               xmlns="http://www.w3.org/2000/svg">
               {/* Filled left panel = sidebar */}
               <rect x="1" y="1" width="5" height="14" rx="1.5"
-                fill={hoverToggle ? '#10B981' : '#9CA3AF'} />
+                fill="rgba(255,255,255,0.9)" />
               {/* Outlined right panel = main content */}
               <rect x="7.5" y="1" width="7.5" height="14" rx="1.5"
                 fill="none"
-                stroke={hoverToggle ? '#10B981' : '#D1D5DB'}
+                stroke="rgba(255,255,255,0.5)"
                 strokeWidth="1.2" />
               {/* Left-pointing chevron inside right panel */}
               <polyline
                 points="11,5.5 9,8 11,10.5"
-                stroke={hoverToggle ? '#10B981' : '#9CA3AF'}
+                stroke="rgba(255,255,255,0.9)"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"

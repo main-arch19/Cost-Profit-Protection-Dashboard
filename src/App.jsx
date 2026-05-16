@@ -165,13 +165,13 @@ export default function App() {
             width:           '30px',
             height:          '30px',
             borderRadius:    '6px',
-            backgroundColor: hoverReopen ? '#F0FDF4' : '#FAFAFA',
-            border:          `1px solid ${hoverReopen ? '#10B981' : '#E5E7EB'}`,
+            backgroundColor: hoverReopen ? '#059669' : '#10B981',
+            border:          'none',
             cursor:          'pointer',
             display:         'flex',
             alignItems:      'center',
             justifyContent:  'center',
-            boxShadow:       hoverReopen ? '0 0 0 3px rgba(16,185,129,0.12)' : '0 1px 4px rgba(0,0,0,0.10)',
+            boxShadow:       hoverReopen ? '0 0 0 3px rgba(16,185,129,0.25)' : '0 0 0 2px rgba(16,185,129,0.15)',
             transition:      'all 0.15s ease',
           }}
         >
@@ -180,15 +180,15 @@ export default function App() {
             {/* Outlined left panel = collapsed sidebar */}
             <rect x="1" y="1" width="5" height="14" rx="1.5"
               fill="none"
-              stroke={hoverReopen ? '#10B981' : '#D1D5DB'}
+              stroke="rgba(255,255,255,0.5)"
               strokeWidth="1.2" />
             {/* Filled right panel = main content */}
             <rect x="7.5" y="1" width="7.5" height="14" rx="1.5"
-              fill={hoverReopen ? '#10B981' : '#9CA3AF'} />
+              fill="rgba(255,255,255,0.9)" />
             {/* Right-pointing chevron inside left panel */}
             <polyline
               points="5,5.5 7,8 5,10.5"
-              stroke={hoverReopen ? '#10B981' : '#9CA3AF'}
+              stroke="rgba(255,255,255,0.9)"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
